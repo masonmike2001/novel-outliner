@@ -7,15 +7,15 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name="beat-segment", schema = "templates")
+@Table(name="beat_segment")
 public class BeatSegment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name; // "Act 1", "Act 2", etc.
+    @Column(name = "title")
+    private String title; // "Act 1", "Act 2", etc.
 
     @Column(name = "start_percentage")
     private Double startPercentage; // 0.0
@@ -30,5 +30,5 @@ public class BeatSegment {
     @JoinColumn(name = "template_id")
     private BeatTemplate template;
 
-    public BeatSegment() {}
+
 }

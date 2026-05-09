@@ -1,21 +1,50 @@
-//package com.mikemason.novel_outliner.data.services;
+package com.mikemason.novel_outliner.data.services;
+
+import com.mikemason.novel_outliner.data.entities.Chapter;
+import com.mikemason.novel_outliner.data.entities.Project;
+import com.mikemason.novel_outliner.data.repositories.ChapterRepository;
+import com.mikemason.novel_outliner.data.repositories.ProjectRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service
+public class PacingService {
+    private final ProjectRepository projectRepository;
+
+    public PacingService(ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;
+    }
+
+//        public List<Integer> calculateTargetWordCount(Long projectId, String sessionId, Long BeatTemplateId) {
+//        // takes in project id and beattemplate, comes up with target word counts for chapters
 //
-//import com.mikemason.novel_outliner.data.entities.Chapter;
-//import com.mikemason.novel_outliner.data.repositories.ChapterRepository;
-//import org.springframework.stereotype.Service;
+//            Optional<Project> project = projectRepository.findByIdAndSessionId(projectId, sessionId);
 //
-//import java.util.List;
-//import java.util.stream.Collectors;
 //
-//@Service
-//public class PacingService {
-//    private final ChapterRepository chapterRepository;
-//
-//    public PacingService(ChapterRepository chapterRepository) {
-//        this.chapterRepository = chapterRepository;
-//    }
+//        }
+
+
 //    public List<Double> calculateHeatmap(Long projectId) {
-//        List<Chapter> chapters = chapterRepository.findByProjectIdOrderBySequenceOrder(projectId);
+//        List<Chapter> chapters = projectRepository.findBySessionIdOrderById(projectId, );
+//
+///*        Find all chapters in project id/session id
+//          Target word count is goal
+//          (Make a feature so that if a chapter is unfinished you can null it with check box out so that the percentages aren't counted for that stage for target )
+//
+//          Iterate through all chapters
+//            Compare the chapter wordcount with the start/end percentage on the corresponding stage
+//            If wordcount
+//
+//
+//
+//
+//
+//  */
+//
+//
 //
 //        // 1. Get Total Word Count
 //        int totalWords = chapters.stream().mapToInt(Chapter::getWordCount).sum();
@@ -27,4 +56,4 @@
 //                .map(c -> (double) c.getWordCount() / totalWords)
 //                .collect(Collectors.toList());
 //    }
-//}
+}

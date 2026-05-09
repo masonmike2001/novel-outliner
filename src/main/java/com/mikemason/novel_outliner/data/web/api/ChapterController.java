@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/chapters")
+@RequestMapping("/api")
 public class ChapterController {
 
     private final ChapterService chapterService;
@@ -17,9 +17,13 @@ public class ChapterController {
         this.chapterService = chapterService;
     }
 
-    @GetMapping
-    public List<Chapter> getChapters(HttpSession session) {
-        return ChapterService.getChapters(session.getId());
+    @GetMapping("/chapters")
+    public List<Chapter> getChapters(
+            @RequestParam(required = false) String sessionId,
+            HttpSession session
+    ) {
+        String effectiveSessionId = (sessionId != null) ? sessionId : session.getId();
+        return chapterService.getChapters(effectiveSessionId);
     }
 
     @PostMapping
@@ -27,10 +31,10 @@ public class ChapterController {
             @RequestBody Chapter chapter,
             HttpSession session
     ) {
-        return ChapterService.save(chapter, session.getId());
+        return chapterService.save(chapter, session.getId());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/chapters/{id}")
     public ResponseEntity<Void> deleteChapter(
             @PathVariable Long id,
             HttpSession session

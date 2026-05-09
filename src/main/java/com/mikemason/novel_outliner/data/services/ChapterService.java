@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 public class ChapterService {
-    private static ChapterRepository chapterRepository = null;
+    public static ChapterRepository chapterRepository = null;
 
     public ChapterService(ChapterRepository chapterRepository) {
         this.chapterRepository = chapterRepository;

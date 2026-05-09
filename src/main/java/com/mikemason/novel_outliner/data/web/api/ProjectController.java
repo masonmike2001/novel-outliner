@@ -1,5 +1,6 @@
 package com.mikemason.novel_outliner.data.web.api;
 
+import com.mikemason.novel_outliner.data.entities.Chapter;
 import com.mikemason.novel_outliner.data.entities.Project;
 import com.mikemason.novel_outliner.data.services.ChapterService;
 import com.mikemason.novel_outliner.data.services.ProjectService;
@@ -20,8 +21,12 @@ public class ProjectController {
     }
 
     @GetMapping
-    public List<Project> getChapters(HttpSession session) {
-        return ProjectService.getProjects(session.getId());
+    public List<Project> getProjects(
+            @RequestParam(required = false) String sessionId,
+            HttpSession session
+    ) {
+        String effectiveSessionId = (sessionId != null) ? sessionId : session.getId();
+        return projectService.getProjects(effectiveSessionId);
     }
 
     @PostMapping
