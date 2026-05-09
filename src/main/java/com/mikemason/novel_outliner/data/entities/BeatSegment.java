@@ -1,5 +1,6 @@
 package com.mikemason.novel_outliner.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -28,6 +29,7 @@ public class BeatSegment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "template_id")
+    @JsonBackReference
     private BeatTemplate template;
 
 

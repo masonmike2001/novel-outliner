@@ -1,5 +1,6 @@
 package com.mikemason.novel_outliner.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,6 +20,7 @@ public class BeatTemplate {
     private String title; // "Three Act Structure", "Hero's Journey"
 
     @OneToMany(mappedBy = "template", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<BeatSegment> beatSegments = new ArrayList<>();;
 
     @Column(name="summary")
