@@ -1,6 +1,7 @@
 package com.mikemason.novel_outliner.data.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,7 +26,10 @@ public class Chapter {
     @Column(name = "sequence_order")
     private Integer sequenceOrder;
 
-
+    @JsonIgnoreProperties
+    @ManyToOne
+    @JoinColumn(name = "beat_segment_id")
+    private BeatSegment beatSegment;
 
     private String sessionId;
 

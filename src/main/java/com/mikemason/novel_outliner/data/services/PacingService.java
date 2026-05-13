@@ -41,33 +41,35 @@ public class PacingService {
 //            target word counts is a list of each segment's word goal
             return targetWordCounts;
         }
-        public void generateChapters(List<Integer> targetWordCounts, Project project, String sessionId, int chapterLength) {
-            int globalSequenceOrder = 1; // Start book at Chapter 1
+    public void generateChapters(List<BeatSegment> segments, Project project, String sessionId, int chapterLength) {
+        int globalSequenceOrder = 1;
 
-            for (Integer segmentTotal : targetWordCounts) {
-                // determine how many chapters this specific segment needs
-                // rounds up so that 4500 words / 2000 length = 3 chapters
-                // (Two full chapters and one partial)
-                int chaptersInSegment = (int) Math.ceil((double) segmentTotal / chapterLength);
+        for (BeatSegment segment : segments) {
+            // Calculate the target word count for THIS specific segment
+            double percent = segment.getEndPercentage() - segment.getStartPercentage();
+            int segmentTotal = (int) Math.round(project.getTargetTotalWordCount() * percent);
 
-                for (int i = 0; i < chaptersInSegment; i++) {
-                    Chapter chapter = new Chapter();
+            // determine chapters for this segment
+            int chaptersInSegment = (int) Math.ceil((double) segmentTotal / chapterLength);
 
-                    // 2. Handle the "Last Chapter" of a segment word count
-                    if (i == chaptersInSegment - 1 && segmentTotal % chapterLength != 0) {
-                        chapter.setWordCount(segmentTotal % chapterLength); // The remainder
-                    } else {
-                        chapter.setWordCount(chapterLength); // A full chapter
-                    }
+            for (int i = 0; i < chaptersInSegment; i++) {
+                Chapter chapter = new Chapter();
 
-                    chapter.setSequenceOrder(globalSequenceOrder++);
-                    chapter.setSessionId(sessionId);
-                    chapter.setProject(project);
-
-                    project.getChapters().add(chapter);
+                // Word count logic
+                if (i == chaptersInSegment - 1 && segmentTotal % chapterLength != 0) {
+                    chapter.setWordCount(segmentTotal % chapterLength);
+                } else {
+                    chapter.setWordCount(chapterLength);
                 }
-            }
 
-            projectRepository.save(project);
+                chapter.setSequenceOrder(globalSequenceOrder++);
+                chapter.setSessionId(sessionId);
+                chapter.setProject(project);
+                chapter.setBeatSegment(segment);
+
+                project.getChapters().add(chapter);
+            }
         }
+        projectRepository.save(project);
+    }
 }
