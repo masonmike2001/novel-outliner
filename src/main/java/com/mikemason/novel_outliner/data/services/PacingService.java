@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class PacingService {
     private final ProjectRepository projectRepository;
     private final BeatTemplateRepository beatTemplateRepository;
@@ -41,37 +41,33 @@ public class PacingService {
 //            target word counts is a list of each segment's word goal
             return targetWordCounts;
         }
-//        public List<Chapter> generateChapterList(List<Integer> targetWordCounts, Project project) {
-////         using the target wordcounts for each segment (prev function
-//        }
+        public void generateChapters(List<Integer> targetWordCounts, Project project, String sessionId, int chapterLength) {
+            int globalSequenceOrder = 1; // Start book at Chapter 1
 
-//    public List<Double> calculateHeatmap(Long projectId) {
-//        List<Chapter> chapters = projectRepository.findBySessionIdOrderById(projectId, );
-//
-///*        Find all chapters in project id/session id
-//          Target word count is goal
-//          (Make a feature so that if a chapter is unfinished you can null it with check box out so that the percentages aren't counted for that stage for target )
-//
-//          Iterate through all chapters
-//            Compare the chapter wordcount with the start/end percentage on the corresponding stage
-//            If wordcount
-//
-//
-//
-//
-//
-//  */
-//
-//
-//
-//        // 1. Get Total Word Count
-//        int totalWords = chapters.stream().mapToInt(Chapter::getWordCount).sum();
-//
-//        // 2. Map each chapter to a 'Heat' intensity (0.0 to 1.0)
-//        // High heat = very long chapter (potential drag)
-//        // Low heat = very short chapter (potential rush)
-//        return chapters.stream()
-//                .map(c -> (double) c.getWordCount() / totalWords)
-//                .collect(Collectors.toList());
-//    }
+            for (Integer segmentTotal : targetWordCounts) {
+                // determine how many chapters this specific segment needs
+                // rounds up so that 4500 words / 2000 length = 3 chapters
+                // (Two full chapters and one partial)
+                int chaptersInSegment = (int) Math.ceil((double) segmentTotal / chapterLength);
+
+                for (int i = 0; i < chaptersInSegment; i++) {
+                    Chapter chapter = new Chapter();
+
+                    // 2. Handle the "Last Chapter" of a segment word count
+                    if (i == chaptersInSegment - 1 && segmentTotal % chapterLength != 0) {
+                        chapter.setWordCount(segmentTotal % chapterLength); // The remainder
+                    } else {
+                        chapter.setWordCount(chapterLength); // A full chapter
+                    }
+
+                    chapter.setSequenceOrder(globalSequenceOrder++);
+                    chapter.setSessionId(sessionId);
+                    chapter.setProject(project);
+
+                    project.getChapters().add(chapter);
+                }
+            }
+
+            projectRepository.save(project);
+        }
 }

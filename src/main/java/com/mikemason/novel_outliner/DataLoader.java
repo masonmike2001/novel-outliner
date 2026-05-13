@@ -9,10 +9,12 @@ import com.mikemason.novel_outliner.data.repositories.BeatTemplateRepository;
 import com.mikemason.novel_outliner.data.repositories.ChapterRepository;
 import com.mikemason.novel_outliner.data.repositories.ProjectRepository;
 import com.mikemason.novel_outliner.data.services.PacingService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 
 
 @Component
@@ -34,6 +36,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
     @Override
+    @Transactional
     public void run(String... args) {
         System.out.println("DEBUG: DataLoader is being initialized by Spring!");
         // Clear existing data
@@ -48,30 +51,30 @@ public class DataLoader implements CommandLineRunner {
         // Create Project
         Project project = new Project();
         project.setTitle("My First Project");
-        project.setTargetTotalWordCount(5000);
+        project.setTargetTotalWordCount(15000);
         project.setSessionId(sessionId);
 
-        // Create Chapters
-        Chapter chapter1 = new Chapter();
-        chapter1.setWordCount(1000);
-        chapter1.setSequenceOrder(1);
-        chapter1.setSessionId(sessionId);
-        chapter1.setProject(project); // associate with project
-
-        Chapter chapter2 = new Chapter();
-        chapter2.setWordCount(1500);
-        chapter2.setSequenceOrder(2);
-        chapter2.setSessionId(sessionId);
-        chapter2.setProject(project);
-
-        // Add chapters to project
-        project.getChapters().add(chapter1);
-        project.getChapters().add(chapter2);
-
-        // Save project (cascade will save chapters automatically)
+//        // Create Chapters
+//        Chapter chapter1 = new Chapter();
+//        chapter1.setWordCount(1000);
+//        chapter1.setSequenceOrder(1);
+//        chapter1.setSessionId(sessionId);
+//        chapter1.setProject(project); // associate with project
+//
+//        Chapter chapter2 = new Chapter();
+//        chapter2.setWordCount(1500);
+//        chapter2.setSequenceOrder(2);
+//        chapter2.setSessionId(sessionId);
+//        chapter2.setProject(project);
+//
+//        // Add chapters to project
+//        project.getChapters().add(chapter1);
+//        project.getChapters().add(chapter2);
+//
+//        // Save project (cascade will save chapters automatically)
         projectRepository.save(project);
 
-        System.out.println("Sample project and chapters created!");
+        System.out.println("Sample project created!");
 
 
         BeatTemplate threeAct = new BeatTemplate();
@@ -110,11 +113,14 @@ public class DataLoader implements CommandLineRunner {
         // Save project (cascade will save chapters automatically)
         beatTemplateRepository.save(threeAct);
 
-        System.out.println("Sample project and chapters created!");
+        System.out.println("Beat template and segments created!");
 
         PacingService pacingService = new PacingService(projectRepository, beatTemplateRepository);
 
-        System.out.println(pacingService.calculateSegmentWordCount(project.getId(), sessionId, threeAct.getId()));
+        List<Integer> segmentWordCounts = pacingService.calculateSegmentWordCount(project.getId(), sessionId, threeAct.getId());
+        System.out.println(segmentWordCounts);
+//        System.out.println();
+        pacingService.generateChapters(segmentWordCounts, project, sessionId, 4000);
 
     }
 }
