@@ -8,6 +8,7 @@ import com.mikemason.novel_outliner.data.repositories.BeatSegmentRepository;
 import com.mikemason.novel_outliner.data.repositories.BeatTemplateRepository;
 import com.mikemason.novel_outliner.data.repositories.ChapterRepository;
 import com.mikemason.novel_outliner.data.repositories.ProjectRepository;
+import com.mikemason.novel_outliner.data.services.PacingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,7 @@ public class DataLoader implements CommandLineRunner {
         this.chapterRepository = chapterRepository;
         this.beatTemplateRepository = beatTemplateRepository;
         this.beatSegmentRepository = beatSegmentRepository;
+
 
     }
 
@@ -109,6 +111,10 @@ public class DataLoader implements CommandLineRunner {
         beatTemplateRepository.save(threeAct);
 
         System.out.println("Sample project and chapters created!");
+
+        PacingService pacingService = new PacingService(projectRepository, beatTemplateRepository);
+
+        System.out.println(pacingService.calculateSegmentWordCount(project.getId(), sessionId, threeAct.getId()));
 
     }
 }

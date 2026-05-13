@@ -1,31 +1,49 @@
 package com.mikemason.novel_outliner.data.services;
 
+import com.mikemason.novel_outliner.data.entities.BeatSegment;
+import com.mikemason.novel_outliner.data.entities.BeatTemplate;
 import com.mikemason.novel_outliner.data.entities.Chapter;
 import com.mikemason.novel_outliner.data.entities.Project;
-import com.mikemason.novel_outliner.data.repositories.ChapterRepository;
+import com.mikemason.novel_outliner.data.repositories.BeatTemplateRepository;
+
 import com.mikemason.novel_outliner.data.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Service
+@Transactional(readOnly = true)
 public class PacingService {
     private final ProjectRepository projectRepository;
+    private final BeatTemplateRepository beatTemplateRepository;
 
-    public PacingService(ProjectRepository projectRepository) {
+    public PacingService(ProjectRepository projectRepository, BeatTemplateRepository beatTemplateRepository) {
         this.projectRepository = projectRepository;
+        this.beatTemplateRepository = beatTemplateRepository;
     }
+        public List<Integer> calculateSegmentWordCount(Long projectId, String sessionId, Long BeatTemplateId) {
+        // takes in project id and beattemplate, comes up with target word counts for each of segments by using target word count
+            Project project = projectRepository.findByIdAndSessionId(projectId, sessionId)
+                    .orElseThrow(() -> new RuntimeException("Project not found"));
 
-//        public List<Integer> calculateTargetWordCount(Long projectId, String sessionId, Long BeatTemplateId) {
-//        // takes in project id and beattemplate, comes up with target word counts for chapters
-//
-//            Optional<Project> project = projectRepository.findByIdAndSessionId(projectId, sessionId);
-//
-//
+            BeatTemplate template = beatTemplateRepository.findByIdWithBeatSegments(BeatTemplateId)
+                    .orElseThrow(() -> new RuntimeException(("Template not found")));
+
+            List<BeatSegment> segments = template.getBeatSegments();
+            List<Integer> targetWordCounts = new ArrayList<>();
+            for (BeatSegment segment : segments) {
+                Double percent = segment.getEndPercentage() - segment.getStartPercentage();
+                targetWordCounts.add((int) Math.round(project.getTargetTotalWordCount() * percent));
+            }
+//            target word counts is a list of each segment's word goal
+            return targetWordCounts;
+        }
+//        public List<Chapter> generateChapterList(List<Integer> targetWordCounts, Project project) {
+////         using the target wordcounts for each segment (prev function
 //        }
-
 
 //    public List<Double> calculateHeatmap(Long projectId) {
 //        List<Chapter> chapters = projectRepository.findBySessionIdOrderById(projectId, );

@@ -21,7 +21,7 @@ public class BeatTemplate {
 
     @OneToMany(mappedBy = "template", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<BeatSegment> beatSegments = new ArrayList<>();;
+    private List<BeatSegment> beatSegments = new ArrayList<>();
 
     @Column(name="summary")
     private String summary; // "Three Act Structure", "Hero's Journey"

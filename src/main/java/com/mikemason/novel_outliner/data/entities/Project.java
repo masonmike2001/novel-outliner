@@ -1,5 +1,6 @@
 package com.mikemason.novel_outliner.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -24,6 +25,7 @@ public class Project {
     // mappedBy = "project" refers to the variable name in the Chapter class
     // cascade = ALL means if we delete the project, the chapters vanish too
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Chapter> chapters = new ArrayList<>();
 
     private String sessionId;
