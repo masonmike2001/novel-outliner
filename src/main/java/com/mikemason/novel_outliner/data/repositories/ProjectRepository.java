@@ -13,6 +13,9 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     // Custom query to get chapters for the heatmap in order
     List<Project> findBySessionIdOrderById(String sessionId);
     Optional<Project> findByIdAndSessionId(Long id, String sessionId);
+    Optional<Project> findBySessionId(String sessionId);
 
     void deleteByCreatedAtBefore(LocalDateTime cutoff);
+
+
 }

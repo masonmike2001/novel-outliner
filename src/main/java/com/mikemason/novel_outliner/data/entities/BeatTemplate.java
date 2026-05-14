@@ -16,7 +16,7 @@ public class BeatTemplate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="title")
+    @Column(name="projectTitle")
     private String title; // "Three Act Structure", "Hero's Journey"
 
     @OneToMany(mappedBy = "template", cascade = CascadeType.ALL, orphanRemoval = true)

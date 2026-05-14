@@ -16,7 +16,7 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "projectTitle")
     private String title;
 
     @Column(name = "target_total_word_count")

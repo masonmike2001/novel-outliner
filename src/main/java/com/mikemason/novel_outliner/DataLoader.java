@@ -119,7 +119,7 @@ public class DataLoader implements CommandLineRunner {
 
         List<Integer> segmentWordCounts = pacingService.calculateSegmentWordCount(project.getId(), sessionId, threeAct.getId());
         System.out.println(segmentWordCounts);
-//        System.out.println();
+
         pacingService.generateChapters(threeAct.getBeatSegments(), project, sessionId, 4000);
 
     }
