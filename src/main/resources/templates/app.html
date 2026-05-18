@@ -298,13 +298,21 @@
                         <input class="form-control" id="projectTitle" type="text" th:field="*{projectTitle}" placeholder="Enter your title..."/>
                         <label for="projectTitle">Project title</label>
                         <div class="invalid-feedback" data-sb-feedback="name:required">A title is required.</div>
+
                     </div>
                     <!-- Email address input-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="email" type="number" name="targetWordCount" placeholder="0"/>
+                        <input class="form-control" id="email" type="number" name="targetWordCount" placeholder="1" min="100" max="300000" required/>
                         <label for="email">Target word count</label>
                         <div class="invalid-feedback" data-sb-feedback="email:required">A target word count is required.</div>
                     </div>
+                    <label>
+                        <select th:field="*{selectedTemplateId}">
+                            <option th:each="template : ${beatTemplateList}"
+                                    th:value="${template.id}"
+                                    th:text="${template.title}"></option>
+                        </select>
+                    </label>
                     <!--                    &lt;!&ndash; Phone number input&ndash;&gt;-->
                     <!--                    <div class="form-floating mb-3">-->
                     <!--                        <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />-->

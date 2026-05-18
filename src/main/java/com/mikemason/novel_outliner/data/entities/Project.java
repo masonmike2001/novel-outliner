@@ -1,5 +1,6 @@
 package com.mikemason.novel_outliner.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -21,6 +22,11 @@ public class Project {
 
     @Column(name = "target_total_word_count")
     private Integer targetTotalWordCount;
+
+    @JsonIgnoreProperties
+    @ManyToOne
+    @JoinColumn(name = "beat_template_id")
+    private BeatTemplate beatTemplate;
 
     // mappedBy = "project" refers to the variable name in the Chapter class
     // cascade = ALL means if we delete the project, the chapters vanish too

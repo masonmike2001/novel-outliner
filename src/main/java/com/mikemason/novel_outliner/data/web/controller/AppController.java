@@ -14,6 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 public class AppController {
@@ -30,29 +34,38 @@ private final BeatTemplateRepository beatTemplateRepository;
     }
     @GetMapping("/app")
     public String getProjectModel(Model model) {
-        ProjectModel projectModel = new ProjectModel("", 0, "none");
+        ProjectModel projectModel = new ProjectModel("", 0, "none", 0l);
         model.addAttribute("projectModel", projectModel);
+        List<BeatTemplate> beatTemplates = beatTemplateRepository.findAll();
+        model.addAttribute("beatTemplateList", beatTemplates);
         return "app";
     }
 
     @PostMapping("/app")
-    public String registerProject(@ModelAttribute ProjectModel projectModel, HttpSession session) {
+    public String registerProject(@ModelAttribute ProjectModel projectModel, HttpSession session, RedirectAttributes redirectAttributes) {
+//        template id may be issue, may need to hardcode either by name or index
+        BeatTemplate selected = beatTemplateRepository.findById(projectModel.selectedTemplateId())
+                .orElseGet(() -> beatTemplateRepository.findAll().get(0)); // Static fallback to index 0
+
+
         String sessionId = session.getId();
         Project project = new Project();
         project.setTitle(projectModel.projectTitle());
         project.setTargetTotalWordCount(projectModel.targetWordCount());
         project.setSessionId(sessionId);
-        // beat template logic will go here, as well as chapter length
+        project.setBeatTemplate(selected);
+        // chapter length logic will go here
         int chapterLength = 4000;
-        BeatTemplate beatTemplate = beatTemplateRepository.findAll().get(0);
-        System.out.println("Registered: " + projectModel.projectTitle() + beatTemplate.getTitle());
-        pacingService.generateChapters(beatTemplate.getBeatSegments(), project, sessionId, chapterLength);
+//        BeatTemplate beatTemplate = beatTemplateRepository.findAll().get(0);
+        System.out.println("Registered: " + projectModel.projectTitle());
+        pacingService.generateChapters(selected.getBeatSegments(), project, sessionId, chapterLength);
         return "redirect:/success";
 
     }
     @GetMapping("/success")
     public String showSuccess(HttpSession session, Model model) {
         String sessionId = session.getId();
+
         Project project = ProjectService.getProjects(sessionId).get(0);
         model.addAttribute("project", project);
         return "success";
