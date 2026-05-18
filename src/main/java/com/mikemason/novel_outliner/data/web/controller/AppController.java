@@ -29,12 +29,11 @@ private final BeatTemplateRepository beatTemplateRepository;
     public AppController(PacingService pacingService, BeatTemplateRepository beatTemplateRepository, ProjectService projectService) {
         this.pacingService = pacingService;
         this.beatTemplateRepository = beatTemplateRepository;
-
         this.projectService = projectService;
     }
     @GetMapping("/app")
     public String getProjectModel(Model model) {
-        ProjectModel projectModel = new ProjectModel("", 0, "none", 0l);
+        ProjectModel projectModel = new ProjectModel("", 0, 4000, "none", 0l);
         model.addAttribute("projectModel", projectModel);
         List<BeatTemplate> beatTemplates = beatTemplateRepository.findAll();
         model.addAttribute("beatTemplateList", beatTemplates);
@@ -43,19 +42,17 @@ private final BeatTemplateRepository beatTemplateRepository;
 
     @PostMapping("/app")
     public String registerProject(@ModelAttribute ProjectModel projectModel, HttpSession session, RedirectAttributes redirectAttributes) {
-//        template id may be issue, may need to hardcode either by name or index
         BeatTemplate selected = beatTemplateRepository.findById(projectModel.selectedTemplateId())
                 .orElseGet(() -> beatTemplateRepository.findAll().get(0)); // Static fallback to index 0
-
-
         String sessionId = session.getId();
+
         Project project = new Project();
         project.setTitle(projectModel.projectTitle());
         project.setTargetTotalWordCount(projectModel.targetWordCount());
         project.setSessionId(sessionId);
         project.setBeatTemplate(selected);
         // chapter length logic will go here
-        int chapterLength = 4000;
+        int chapterLength = projectModel.chapterLength();
 //        BeatTemplate beatTemplate = beatTemplateRepository.findAll().get(0);
         System.out.println("Registered: " + projectModel.projectTitle());
         pacingService.generateChapters(selected.getBeatSegments(), project, sessionId, chapterLength);

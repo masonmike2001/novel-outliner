@@ -32,6 +32,7 @@ public class Project {
     // cascade = ALL means if we delete the project, the chapters vanish too
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
+    @OrderBy("sequenceOrder ASC")
     private List<Chapter> chapters = new ArrayList<>();
 
     private String sessionId;
