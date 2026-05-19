@@ -49,19 +49,25 @@ public class PacingService {
             double percent = segment.getEndPercentage() - segment.getStartPercentage();
             int segmentTotal = (int) Math.round(project.getTargetTotalWordCount() * percent);
 
+            if (segmentTotal <= 0) continue;
+
             // determine chapters for this segment
             int chaptersInSegment = (int) Math.ceil((double) segmentTotal / chapterLength);
+
+            int baseLength = segmentTotal / chaptersInSegment;
+            int remainder = segmentTotal % chaptersInSegment;
 
             for (int i = 0; i < chaptersInSegment; i++) {
                 Chapter chapter = new Chapter();
 
-                // Word count logic
-                if (i == chaptersInSegment - 1 && segmentTotal % chapterLength != 0) {
-                    chapter.setWordCount(segmentTotal % chapterLength);
-                } else {
-                    chapter.setWordCount(chapterLength);
+
+                int assignedWordCount = baseLength;
+                if (remainder > 0) {
+                    assignedWordCount += 1;
+                    remainder--;
                 }
 
+                chapter.setWordCount(assignedWordCount);
                 chapter.setSequenceOrder(globalSequenceOrder++);
                 chapter.setSessionId(sessionId);
                 chapter.setProject(project);
@@ -70,6 +76,8 @@ public class PacingService {
                 project.getChapters().add(chapter);
             }
         }
+
+        // Save everything in one database transaction
         projectRepository.save(project);
     }
 }

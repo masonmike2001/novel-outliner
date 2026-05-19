@@ -1,13 +1,10 @@
 package com.mikemason.novel_outliner.data.web.controller;
 
-
-import com.mikemason.novel_outliner.data.dto.ProjectModel;
 import com.mikemason.novel_outliner.data.entities.BeatTemplate;
 import com.mikemason.novel_outliner.data.entities.Project;
 import com.mikemason.novel_outliner.data.repositories.BeatTemplateRepository;
 import com.mikemason.novel_outliner.data.repositories.ProjectRepository;
 import com.mikemason.novel_outliner.data.services.PacingService;
-import com.mikemason.novel_outliner.data.services.ProjectService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,53 +14,50 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
 
 @Controller
 public class AppController {
 private final PacingService pacingService;
-private final ProjectService projectService;
+private final ProjectRepository projectRepository;
 private final BeatTemplateRepository beatTemplateRepository;
 
 
-    public AppController(PacingService pacingService, BeatTemplateRepository beatTemplateRepository, ProjectService projectService) {
+    public AppController(PacingService pacingService, BeatTemplateRepository beatTemplateRepository, ProjectRepository projectRepository) {
         this.pacingService = pacingService;
         this.beatTemplateRepository = beatTemplateRepository;
-        this.projectService = projectService;
+        this.projectRepository = projectRepository;
     }
+
     @GetMapping("/app")
     public String getProjectModel(Model model) {
-        ProjectModel projectModel = new ProjectModel("", 0, 4000, "none", 0l);
-        model.addAttribute("projectModel", projectModel);
-        List<BeatTemplate> beatTemplates = beatTemplateRepository.findAll();
-        model.addAttribute("beatTemplateList", beatTemplates);
+        Project project = new Project();
+        model.addAttribute("project", project);
+        model.addAttribute("beatTemplateList", beatTemplateRepository.findAll());
+
         return "app";
     }
 
     @PostMapping("/app")
-    public String registerProject(@ModelAttribute ProjectModel projectModel, HttpSession session, RedirectAttributes redirectAttributes) {
-        BeatTemplate selected = beatTemplateRepository.findById(projectModel.selectedTemplateId())
-                .orElseGet(() -> beatTemplateRepository.findAll().get(0)); // Static fallback to index 0
-        String sessionId = session.getId();
+    public String registerProject(@ModelAttribute("project") Project project, HttpSession session, RedirectAttributes redirectAttributes) {
+        if (project.getBeatTemplate() == null || project.getBeatTemplate().getId() == null) {
+            project.setBeatTemplate(beatTemplateRepository.findAll().get(0));
+        } else {
+            BeatTemplate managedTemplate = beatTemplateRepository.findById(project.getBeatTemplate().getId()).orElseThrow();
+            project.setBeatTemplate(managedTemplate);
+        }
 
-        Project project = new Project();
-        project.setTitle(projectModel.projectTitle());
-        project.setTargetTotalWordCount(projectModel.targetWordCount());
-        project.setSessionId(sessionId);
-        project.setBeatTemplate(selected);
-        // chapter length logic will go here
-        int chapterLength = projectModel.chapterLength();
-//        BeatTemplate beatTemplate = beatTemplateRepository.findAll().get(0);
-        System.out.println("Registered: " + projectModel.projectTitle());
-        pacingService.generateChapters(selected.getBeatSegments(), project, sessionId, chapterLength);
+        project.setSessionId(session.getId());
+        Project savedProject = projectRepository.save(project);
+
+        pacingService.generateChapters(savedProject.getBeatTemplate().getBeatSegments(), project, project.getSessionId(), project.getChapterLength());
+        redirectAttributes.addAttribute("projectId", savedProject.getId());
         return "redirect:/success";
 
     }
     @GetMapping("/success")
-    public String showSuccess(HttpSession session, Model model) {
-        String sessionId = session.getId();
-
-        Project project = ProjectService.getProjects(sessionId).get(0);
+    public String showSuccess(@RequestParam("projectId") Long projectId, Model model) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("Project not found: " + projectId));
         model.addAttribute("project", project);
         return "success";
     }

@@ -84,21 +84,21 @@ public class DataLoader implements CommandLineRunner {
         threeAct.setSummary("This is the Three Act Structure");
 
         BeatSegment setup = new BeatSegment();
-        setup.setTitle("Act 1: Setup");
+        setup.setTitle("Setup");
         setup.setStartPercentage(0.0);
         setup.setEndPercentage(0.25);
         setup.setSequenceOrder(1);
         setup.setTemplate(threeAct);
 
         BeatSegment confrontation = new BeatSegment();
-        confrontation.setTitle("Act 2: Confrontation");
+        confrontation.setTitle("Confrontation");
         confrontation.setStartPercentage(0.25);
         confrontation.setEndPercentage(0.75);
         confrontation.setSequenceOrder(2);
         confrontation.setTemplate(threeAct);
 
         BeatSegment resolution = new BeatSegment();
-        resolution.setTitle("Act 3: Resolution");
+        resolution.setTitle("Resolution");
         resolution.setStartPercentage(0.75);
         resolution.setEndPercentage(1.0);
         resolution.setSequenceOrder(3);
@@ -120,21 +120,21 @@ public class DataLoader implements CommandLineRunner {
         fourAct.setSummary("This is the Four Act Structure");
 
         BeatSegment setupFour = new BeatSegment();
-        setupFour.setTitle("Act 1: Setup");
+        setupFour.setTitle("Setup");
         setupFour.setStartPercentage(0.0);
         setupFour.setEndPercentage(0.25);
         setupFour.setSequenceOrder(1);
         setupFour.setTemplate(fourAct);
 
         BeatSegment complicationFour = new BeatSegment();
-        complicationFour.setTitle("Act 3: Complication");
+        complicationFour.setTitle("Complication");
         complicationFour.setStartPercentage(0.25);
         complicationFour.setEndPercentage(0.50);
         complicationFour.setSequenceOrder(2);
         complicationFour.setTemplate(fourAct);
 
         BeatSegment confrontationFour= new BeatSegment();
-        confrontationFour.setTitle("Act 3: Confrontation");
+        confrontationFour.setTitle("Confrontation");
         confrontationFour.setStartPercentage(0.50);
         confrontationFour.setEndPercentage(0.75);
         confrontationFour.setSequenceOrder(3);
@@ -142,7 +142,7 @@ public class DataLoader implements CommandLineRunner {
 
 
         BeatSegment resolutionFour = new BeatSegment();
-        resolutionFour.setTitle("Act 4: Resolution");
+        resolutionFour.setTitle("Resolution");
         resolutionFour.setStartPercentage(0.75);
         resolutionFour.setEndPercentage(1.0);
         resolutionFour.setSequenceOrder(4);
