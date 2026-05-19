@@ -1,7 +1,5 @@
 package com.mikemason.novel_outliner.data.web.controller;
 
-
-import com.mikemason.novel_outliner.data.dto.ProjectModel;
 import com.mikemason.novel_outliner.data.entities.BeatTemplate;
 import com.mikemason.novel_outliner.data.entities.Project;
 import com.mikemason.novel_outliner.data.repositories.BeatTemplateRepository;
@@ -22,40 +20,50 @@ import java.util.List;
 @Controller
 public class AppController {
 private final PacingService pacingService;
-private final ProjectService projectService;
+private final ProjectRepository projectRepository;
 private final BeatTemplateRepository beatTemplateRepository;
 
 
-    public AppController(PacingService pacingService, BeatTemplateRepository beatTemplateRepository, ProjectService projectService) {
+    public AppController(PacingService pacingService, BeatTemplateRepository beatTemplateRepository, ProjectRepository projectRepository) {
         this.pacingService = pacingService;
         this.beatTemplateRepository = beatTemplateRepository;
-        this.projectService = projectService;
+        this.projectRepository = projectRepository;
     }
+
     @GetMapping("/app")
     public String getProjectModel(Model model) {
-        ProjectModel projectModel = new ProjectModel("", 0, 4000, "none", 0l);
-        model.addAttribute("projectModel", projectModel);
-        List<BeatTemplate> beatTemplates = beatTemplateRepository.findAll();
-        model.addAttribute("beatTemplateList", beatTemplates);
+        Project project = new Project();
+        model.addAttribute("project", project);
+        model.addAttribute("beatTemplateList", beatTemplateRepository.findAll());
+
         return "app";
     }
 
     @PostMapping("/app")
-    public String registerProject(@ModelAttribute ProjectModel projectModel, HttpSession session, RedirectAttributes redirectAttributes) {
-        BeatTemplate selected = beatTemplateRepository.findById(projectModel.selectedTemplateId())
-                .orElseGet(() -> beatTemplateRepository.findAll().get(0)); // Static fallback to index 0
-        String sessionId = session.getId();
+    public String registerProject(@ModelAttribute("projectModel") Project project, HttpSession session, RedirectAttributes redirectAttributes) {
+        BeatTemplate beatTemplate = project.getBeatTemplate();
 
-        Project project = new Project();
-        project.setTitle(projectModel.projectTitle());
-        project.setTargetTotalWordCount(projectModel.targetWordCount());
-        project.setSessionId(sessionId);
-        project.setBeatTemplate(selected);
-        // chapter length logic will go here
-        int chapterLength = projectModel.chapterLength();
-//        BeatTemplate beatTemplate = beatTemplateRepository.findAll().get(0);
-        System.out.println("Registered: " + projectModel.projectTitle());
-        pacingService.generateChapters(selected.getBeatSegments(), project, sessionId, chapterLength);
+        // 2. Fetch the fully managed BeatTemplate entity from DB
+
+        // 3. Link the full template and session details back to the project
+
+        project.setBeatTemplate(beatTemplate);
+        project.setSessionId(session.getId());
+        String submittedTitle = project.getTitle();
+        Integer submittedChapterLength = project.getChapterLength();
+        Integer targetTotalWordCount = project.getTargetTotalWordCount();
+
+
+        // 4. Save to database
+        projectRepository.save(project);
+
+
+
+
+
+        System.out.println("Registered: " + project.getTitle());
+        pacingService.generateChapters(beatTemplate.getBeatSegments(), project, project.getSessionId(), project.getChapterLength());
+
         return "redirect:/success";
 
     }

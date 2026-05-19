@@ -8,7 +8,6 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 @Entity
 @Data
 @Table(name = "project")
@@ -17,7 +16,7 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "projectTitle")
+    @Column(name = "project_title")
     private String title;
 
     @Column(name = "target_total_word_count")
@@ -28,8 +27,6 @@ public class Project {
     @JoinColumn(name = "beat_template_id")
     private BeatTemplate beatTemplate;
 
-    // mappedBy = "project" refers to the variable name in the Chapter class
-    // cascade = ALL means if we delete the project, the chapters vanish too
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     @OrderBy("sequenceOrder ASC")
@@ -37,11 +34,14 @@ public class Project {
 
     private String sessionId;
 
+    @Column(name = "create_date")
     private LocalDateTime createdAt;
+
+    @Column(name = "target_chapter_word_count")
+    private Integer chapterLength;
 
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
-
 }

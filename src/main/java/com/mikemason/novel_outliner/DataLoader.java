@@ -127,7 +127,7 @@ public class DataLoader implements CommandLineRunner {
         setupFour.setTemplate(fourAct);
 
         BeatSegment complicationFour = new BeatSegment();
-        complicationFour.setTitle("Act 3: Complication");
+        complicationFour.setTitle("Act 2: Complication");
         complicationFour.setStartPercentage(0.25);
         complicationFour.setEndPercentage(0.50);
         complicationFour.setSequenceOrder(2);

@@ -292,27 +292,27 @@
                 <!-- To make this form functional, sign up at-->
                 <!-- https://startbootstrap.com/solution/contact-forms-->
                 <!-- to get an API token!-->
-                <form id="appForm" th:action="@{/app}" th:object="${projectModel}" method="post">
+                <form id="appForm" th:action="@{/app}" th:object="${project}" method="post">
                     <!-- Title input-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="projectTitle" type="text" th:field="*{projectTitle}" placeholder="Enter your title..."/>
-                        <label for="projectTitle">Project title</label>
+                        <input class="form-control" id="title" type="text" th:field="*{title}" placeholder="Enter your title..."/>
+                        <label for="title">Project title</label>
                         <div class="invalid-feedback" data-sb-feedback="name:required">A title is required.</div>
 
                     </div>
                     <!-- Email address input-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="email" type="number" name="targetWordCount" placeholder="100000" min="100" max="300000" required/>
+                        <input class="form-control" id="email" type="number" name="targetTotalWordCount" placeholder="100000" min="100" max="300000" required/>
                         <label for="email">Target total word count</label>
                         <div class="invalid-feedback" data-sb-feedback="email:required">A target word count is required.</div>
                     </div>
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="chapter" type="number" name="targetChapterWordCount" th:field="*{chapterLength}" placeholder="4000" min="100" max="300000" required/>
+                        <input class="form-control" id="chapter" type="number" name="chapterLength" th:field="*{chapterLength}" placeholder="4000" min="100" max="300000" required/>
                         <label for="chapter">Target chapter word count</label>
                         <div class="invalid-feedback" data-sb-feedback="chapter:required">A target chapter word count is required.</div>
                     </div>
                     <label>
-                        <select class="form-select" th:field="*{selectedTemplateId}">
+                        <select class="form-select" th:field="*{beatTemplate}">
                             <option th:each="template : ${beatTemplateList}"
                                     th:value="${template.id}"
                                     th:text="${template.title}"></option>

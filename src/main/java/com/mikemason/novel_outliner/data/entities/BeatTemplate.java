@@ -20,6 +20,7 @@ public class BeatTemplate {
     private String title; // "Three Act Structure", "Hero's Journey"
 
     @OneToMany(mappedBy = "template", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("sequenceOrder ASC")
     @JsonManagedReference
     private List<BeatSegment> beatSegments = new ArrayList<>();
 
