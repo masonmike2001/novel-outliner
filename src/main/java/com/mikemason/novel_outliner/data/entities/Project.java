@@ -27,7 +27,7 @@ public class Project {
 
     @JsonIgnoreProperties
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "beat_template_id")
+    @JoinColumn(name = "beat_template_id", nullable = true)
     private BeatTemplate beatTemplate;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
