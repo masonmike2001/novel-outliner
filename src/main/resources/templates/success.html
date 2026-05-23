@@ -35,7 +35,7 @@
         <div class="row gx-5 justify-content-center">
             <div class="col-lg-6">
                 <div class="text-center my-5">
-                    <h1 class="display-5 fw-bolder text-white mb-2">Generated Outline:</h1>
+                    <h1 class="display-5 fw-bolder text-white mb-2" th:text="${project.title}">Project Outline:</h1>
 
                 </div>
             </div>
@@ -43,39 +43,62 @@
     </div>
 </header>
 <div class="container mt-5 bg-dark">
-    <h2 class="text-white" th:text="${project.title}">Project Name</h2>
-    <p class="text-white">Target Word Count: <span th:text="${project.targetTotalWordCount}">0</span></p>
+    <h3 class="text-white">Outline</h3>
+    <strong class="text-white">Target Word Count: <span th:text="${project.targetTotalWordCount}">0</span></strong>
     <p class="text-white">You selected beat template: <strong th:text="${project.beatTemplate.title}"></strong></p>
 
     <a href="/app">Go Back</a>
     <hr/>
 
-    <h3 class="text-white">Project Chapters</h3>
+
     <hr class="bg-dark">
-    <table class="table table-striped bg-dark">
-        <thead>
-        <tr>
-            <th class="text-white">Chapter</th>
-            <th class="text-white">Target Word Count</th>
-            <th class="text-white">Story Segment</th>
-        </tr>
-        </thead>
-        <tbody>
         <!-- This is how you traverse the chapters list -->
-        <tr th:each="chapter : ${project.chapters}">
-            <td class="text-white" th:text="${chapter.sequenceOrder}">1</td>
-            <td class="text-white" th:text="${chapter.wordCount}">500</td>
-            <!-- Using #temporals for nice date formatting -->
-            <td class="text-white">
-                <span th:if="${chapter.beatSegment != null}"
-                      th:text="${chapter.beatSegment.title}">
-                    Inciting Incident
+        <!-- Main Table Container -->
+        <table class="table table-dark table-hover">
+            <thead>
+            <tr>
+                <th>Chapter</th>
+                <th>Target Word Count</th>
+                <th>Story Segment</th>
+            </tr>
+            </thead>
+
+            <!-- 1. LOOP THROUGH TEMPLATE SEGMENTS (Sorted by Sequence Order) -->
+            <tbody th:each="segment : ${project.beatTemplate.beatSegments}">
+
+            <!-- Segment Section Header Row -->
+            <tr class="table-active border-bottom border-secondary">
+                <td colspan="3" class="py-2">
+                    <span class="text-info font-weight-bold h6 mb-0" th:text="${segment.title}">Segment Title</span>
+                    <span class="text-muted small ml-2"
+                          th:text="'(' + ${#numbers.formatInteger(segment.startPercentage * 100, 0)} + '%' +
+                               (${segment.startPercentage != segment.endPercentage} ? ' to ' + ${#numbers.formatInteger(segment.endPercentage * 100, 0)} + '%' : '') + ')'">
+                    (0% to 12%)
                 </span>
-                <span th:unless="${chapter.beatSegment != null}" class="text-muted">
-                    Unassigned
-                </span>
-            </td>
-        </tr>
+                </td>
+            </tr>
+
+            <!-- Nested Loop: Render chapters belonging to THIS specific segment -->
+            <tr th:each="chapter : ${project.chapters}"
+                th:if="${chapter.beatSegment != null && chapter.beatSegment.id == segment.id}">
+                <td class="pl-4 text-white" th:text="'Chapter ' + ${chapter.sequenceOrder}">1</td>
+                <td class="text-white" th:text="${#numbers.formatInteger(chapter.wordCount, 0)}">3150</td>
+                <td class="text-muted small" th:text="${segment.title}">Segment Title</td>
+            </tr>
+            </tbody>
+
+<!--            &lt;!&ndash; 2. CATCH-ALL FOR UNASSIGNED CHAPTERS (If any fall outside ranges) &ndash;&gt;-->
+<!--            <tbody th:if="${#lists.anyWith(project.chapters, 'beatSegment == null')}">-->
+<!--            <tr class="table-warning text-dark">-->
+<!--                <td colspan="3" class="py-2 font-weight-bold">Unassigned Chapters</td>-->
+<!--            </tr>-->
+<!--            <tr th:each="chapter : ${project.chapters}" th:if="${chapter.beatSegment == null}">-->
+<!--                <td class="pl-4 text-white" th:text="'Chapter ' + ${chapter.sequenceOrder}">X</td>-->
+<!--                <td class="text-white" th:text="${chapter.wordCount}">500</td>-->
+<!--                <td class="text-warning small">Unassigned</td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+        </table>
         </tbody>
     </table>
 </div>

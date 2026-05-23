@@ -22,8 +22,11 @@ public class Project {
     @Column(name = "target_total_word_count")
     private Integer targetTotalWordCount;
 
+
+
+
     @JsonIgnoreProperties
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "beat_template_id")
     private BeatTemplate beatTemplate;
 

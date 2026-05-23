@@ -36,20 +36,34 @@ private final BeatTemplateRepository beatTemplateRepository;
 
         return "app";
     }
-
     @PostMapping("/app")
-    public String registerProject(@ModelAttribute("project") Project project, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String registerProject(@ModelAttribute("project") Project project,
+                                  HttpSession session,
+                                  RedirectAttributes redirectAttributes) {
+
+        BeatTemplate targetTemplate;
+
         if (project.getBeatTemplate() == null || project.getBeatTemplate().getId() == null) {
-            project.setBeatTemplate(beatTemplateRepository.findAll().get(0));
+            targetTemplate = beatTemplateRepository.findAll().stream()
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("No story templates found in database!"));
         } else {
-            BeatTemplate managedTemplate = beatTemplateRepository.findById(project.getBeatTemplate().getId()).orElseThrow();
-            project.setBeatTemplate(managedTemplate);
+            targetTemplate = beatTemplateRepository.findById(project.getBeatTemplate().getId())
+                    .orElseThrow(() -> new RuntimeException("Template not found"));
         }
 
+        project.setBeatTemplate(targetTemplate);
         project.setSessionId(session.getId());
-        Project savedProject = projectRepository.save(project);
 
-        pacingService.generateChapters(savedProject.getBeatTemplate().getBeatSegments(), project, project.getSessionId(), project.getChapterLength());
+        Project savedProject = projectRepository.saveAndFlush(project);
+
+        pacingService.generateChapters(
+                savedProject.getBeatTemplate().getBeatSegments(),
+                savedProject,
+                savedProject.getSessionId(),
+                savedProject.getChapterLength()
+        );
+
         redirectAttributes.addAttribute("projectId", savedProject.getId());
         return "redirect:/success";
 
