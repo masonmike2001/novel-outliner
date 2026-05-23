@@ -157,7 +157,123 @@ public class DataLoader implements CommandLineRunner {
 
         beatTemplateRepository.save(fourAct);
 
+// Initialize the Hero's Journey Template
+        BeatTemplate herosJourney = new BeatTemplate();
+        herosJourney.setTitle("The Hero's Journey");
+        herosJourney.setSummary("The classic 12-stage narrative arc popularized by Joseph Campbell and Christopher Vogler.");
 
+// 1. The Ordinary World
+        BeatSegment ordinaryWorld = new BeatSegment();
+        ordinaryWorld.setTitle("The Ordinary World");
+        ordinaryWorld.setStartPercentage(0.0);
+        ordinaryWorld.setEndPercentage(0.12);
+        ordinaryWorld.setSequenceOrder(1);
+        ordinaryWorld.setTemplate(herosJourney);
+
+// 2. The Call to Adventure
+        BeatSegment callToAdventure = new BeatSegment();
+        callToAdventure.setTitle("The Call to Adventure");
+        callToAdventure.setStartPercentage(0.12);
+        callToAdventure.setEndPercentage(0.12);
+        callToAdventure.setSequenceOrder(2);
+        callToAdventure.setTemplate(herosJourney);
+
+// 3. The Refusal of the Call
+        BeatSegment refusalOfCall = new BeatSegment();
+        refusalOfCall.setTitle("The Refusal of the Call");
+        refusalOfCall.setStartPercentage(0.12);
+        refusalOfCall.setEndPercentage(0.25);
+        refusalOfCall.setSequenceOrder(3);
+        refusalOfCall.setTemplate(herosJourney);
+
+// 4. Meeting with the Mentor
+        BeatSegment meetingMentor = new BeatSegment();
+        meetingMentor.setTitle("Meeting with the Mentor");
+        meetingMentor.setStartPercentage(0.12);
+        meetingMentor.setEndPercentage(0.25);
+        meetingMentor.setSequenceOrder(4);
+        meetingMentor.setTemplate(herosJourney);
+
+// 5. Crossing the First Threshold
+        BeatSegment crossingThreshold = new BeatSegment();
+        crossingThreshold.setTitle("Crossing the First Threshold");
+        crossingThreshold.setStartPercentage(0.25);
+        crossingThreshold.setEndPercentage(0.25);
+        crossingThreshold.setSequenceOrder(5);
+        crossingThreshold.setTemplate(herosJourney);
+
+// 6. Tests, Allies, Enemies
+        BeatSegment testsAlliesEnemies = new BeatSegment();
+        testsAlliesEnemies.setTitle("Tests, Allies, Enemies");
+        testsAlliesEnemies.setStartPercentage(0.25);
+        testsAlliesEnemies.setEndPercentage(0.50);
+        testsAlliesEnemies.setSequenceOrder(6);
+        testsAlliesEnemies.setTemplate(herosJourney);
+
+// 7. Approach to the Inmost Cave
+        BeatSegment approachCave = new BeatSegment();
+        approachCave.setTitle("Approach to the Inmost Cave");
+        approachCave.setStartPercentage(0.50);
+        approachCave.setEndPercentage(0.50);
+        approachCave.setSequenceOrder(7);
+        approachCave.setTemplate(herosJourney);
+
+// 8. The Ordeal
+        BeatSegment theOrdeal = new BeatSegment();
+        theOrdeal.setTitle("The Ordeal");
+        theOrdeal.setStartPercentage(0.50);
+        theOrdeal.setEndPercentage(0.75);
+        theOrdeal.setSequenceOrder(8);
+        theOrdeal.setTemplate(herosJourney);
+
+// 9. The Reward
+        BeatSegment theReward = new BeatSegment();
+        theReward.setTitle("The Reward");
+        theReward.setStartPercentage(0.75);
+        theReward.setEndPercentage(0.80);
+        theReward.setSequenceOrder(9);
+        theReward.setTemplate(herosJourney);
+
+// 10. The Road Back
+        BeatSegment theRoadBack = new BeatSegment();
+        theRoadBack.setTitle("The Road Back");
+        theRoadBack.setStartPercentage(0.80);
+        theRoadBack.setEndPercentage(0.90);
+        theRoadBack.setSequenceOrder(10);
+        theRoadBack.setTemplate(herosJourney);
+
+// 11. The Resurrection
+        BeatSegment theResurrection = new BeatSegment();
+        theResurrection.setTitle("The Resurrection");
+        theResurrection.setStartPercentage(0.90);
+        theResurrection.setEndPercentage(0.99);
+        theResurrection.setSequenceOrder(11);
+        theResurrection.setTemplate(herosJourney);
+
+// 12. Return with the Elixir
+        BeatSegment returnWithElixir = new BeatSegment();
+        returnWithElixir.setTitle("Return with the Elixir");
+        returnWithElixir.setStartPercentage(0.99);
+        returnWithElixir.setEndPercentage(1.00);
+        returnWithElixir.setSequenceOrder(12);
+        returnWithElixir.setTemplate(herosJourney);
+
+// Add all beat segments to the template collection
+        herosJourney.getBeatSegments().add(ordinaryWorld);
+        herosJourney.getBeatSegments().add(callToAdventure);
+        herosJourney.getBeatSegments().add(refusalOfCall);
+        herosJourney.getBeatSegments().add(meetingMentor);
+        herosJourney.getBeatSegments().add(crossingThreshold);
+        herosJourney.getBeatSegments().add(testsAlliesEnemies);
+        herosJourney.getBeatSegments().add(approachCave);
+        herosJourney.getBeatSegments().add(theOrdeal);
+        herosJourney.getBeatSegments().add(theReward);
+        herosJourney.getBeatSegments().add(theRoadBack);
+        herosJourney.getBeatSegments().add(theResurrection);
+        herosJourney.getBeatSegments().add(returnWithElixir);
+
+// Persist to the database via repository
+        beatTemplateRepository.save(herosJourney);
 
         System.out.println("Beat template and segments created!");
 
