@@ -76,87 +76,6 @@ public class DataLoader implements CommandLineRunner {
 
         System.out.println("Sample project created!");
 
-
-        // https://www.storystructures.com/explore/threeact
-
-        BeatTemplate threeAct = new BeatTemplate();
-        threeAct.setTitle("Three Act Structure");
-        threeAct.setSummary("This is the Three Act Structure");
-
-        BeatSegment setup = new BeatSegment();
-        setup.setTitle("Setup");
-        setup.setStartPercentage(0.0);
-        setup.setEndPercentage(0.25);
-        setup.setSequenceOrder(1);
-        setup.setTemplate(threeAct);
-
-        BeatSegment confrontation = new BeatSegment();
-        confrontation.setTitle("Confrontation");
-        confrontation.setStartPercentage(0.25);
-        confrontation.setEndPercentage(0.75);
-        confrontation.setSequenceOrder(2);
-        confrontation.setTemplate(threeAct);
-
-        BeatSegment resolution = new BeatSegment();
-        resolution.setTitle("Resolution");
-        resolution.setStartPercentage(0.75);
-        resolution.setEndPercentage(1.0);
-        resolution.setSequenceOrder(3);
-        resolution.setTemplate(threeAct);
-
-
-        // Add beat segments to project
-        threeAct.getBeatSegments().add(setup);
-        threeAct.getBeatSegments().add(confrontation);
-        threeAct.getBeatSegments().add(resolution);
-
-        // Save project (cascade will save templates automatically)
-        beatTemplateRepository.save(threeAct);
-
-
-//      https://www.storystructures.com/explore/fouract
-        BeatTemplate fourAct = new BeatTemplate();
-        fourAct.setTitle("Four Act Structure");
-        fourAct.setSummary("This is the Four Act Structure");
-
-        BeatSegment setupFour = new BeatSegment();
-        setupFour.setTitle("Setup");
-        setupFour.setStartPercentage(0.0);
-        setupFour.setEndPercentage(0.25);
-        setupFour.setSequenceOrder(1);
-        setupFour.setTemplate(fourAct);
-
-        BeatSegment complicationFour = new BeatSegment();
-        complicationFour.setTitle("Complication");
-        complicationFour.setStartPercentage(0.25);
-        complicationFour.setEndPercentage(0.50);
-        complicationFour.setSequenceOrder(2);
-        complicationFour.setTemplate(fourAct);
-
-        BeatSegment confrontationFour= new BeatSegment();
-        confrontationFour.setTitle("Confrontation");
-        confrontationFour.setStartPercentage(0.50);
-        confrontationFour.setEndPercentage(0.75);
-        confrontationFour.setSequenceOrder(3);
-        confrontationFour.setTemplate(fourAct);
-
-
-        BeatSegment resolutionFour = new BeatSegment();
-        resolutionFour.setTitle("Resolution");
-        resolutionFour.setStartPercentage(0.75);
-        resolutionFour.setEndPercentage(1.0);
-        resolutionFour.setSequenceOrder(4);
-        resolutionFour.setTemplate(fourAct);
-
-
-        // Add beat segments to project
-        fourAct.getBeatSegments().add(setupFour);
-        fourAct.getBeatSegments().add(complicationFour);
-        fourAct.getBeatSegments().add(confrontationFour);
-        fourAct.getBeatSegments().add(resolutionFour);
-
-        beatTemplateRepository.save(fourAct);
-
 // Initialize the Hero's Journey Template
         BeatTemplate herosJourney = new BeatTemplate();
         herosJourney.setTitle("The Hero's Journey");
@@ -274,6 +193,87 @@ public class DataLoader implements CommandLineRunner {
 
 // Persist to the database via repository
         beatTemplateRepository.save(herosJourney);
+
+        // https://www.storystructures.com/explore/threeact
+
+        BeatTemplate threeAct = new BeatTemplate();
+        threeAct.setTitle("Three Act Structure");
+        threeAct.setSummary("This is the Three Act Structure");
+
+        BeatSegment setup = new BeatSegment();
+        setup.setTitle("Setup");
+        setup.setStartPercentage(0.0);
+        setup.setEndPercentage(0.25);
+        setup.setSequenceOrder(1);
+        setup.setTemplate(threeAct);
+
+        BeatSegment confrontation = new BeatSegment();
+        confrontation.setTitle("Confrontation");
+        confrontation.setStartPercentage(0.25);
+        confrontation.setEndPercentage(0.75);
+        confrontation.setSequenceOrder(2);
+        confrontation.setTemplate(threeAct);
+
+        BeatSegment resolution = new BeatSegment();
+        resolution.setTitle("Resolution");
+        resolution.setStartPercentage(0.75);
+        resolution.setEndPercentage(1.0);
+        resolution.setSequenceOrder(3);
+        resolution.setTemplate(threeAct);
+
+
+        // Add beat segments to project
+        threeAct.getBeatSegments().add(setup);
+        threeAct.getBeatSegments().add(confrontation);
+        threeAct.getBeatSegments().add(resolution);
+
+        // Save project (cascade will save templates automatically)
+        beatTemplateRepository.save(threeAct);
+
+
+//      https://www.storystructures.com/explore/fouract
+        BeatTemplate fourAct = new BeatTemplate();
+        fourAct.setTitle("Four Act Structure");
+        fourAct.setSummary("This is the Four Act Structure");
+
+        BeatSegment setupFour = new BeatSegment();
+        setupFour.setTitle("Setup");
+        setupFour.setStartPercentage(0.0);
+        setupFour.setEndPercentage(0.25);
+        setupFour.setSequenceOrder(1);
+        setupFour.setTemplate(fourAct);
+
+        BeatSegment complicationFour = new BeatSegment();
+        complicationFour.setTitle("Complication");
+        complicationFour.setStartPercentage(0.25);
+        complicationFour.setEndPercentage(0.50);
+        complicationFour.setSequenceOrder(2);
+        complicationFour.setTemplate(fourAct);
+
+        BeatSegment confrontationFour= new BeatSegment();
+        confrontationFour.setTitle("Confrontation");
+        confrontationFour.setStartPercentage(0.50);
+        confrontationFour.setEndPercentage(0.75);
+        confrontationFour.setSequenceOrder(3);
+        confrontationFour.setTemplate(fourAct);
+
+
+        BeatSegment resolutionFour = new BeatSegment();
+        resolutionFour.setTitle("Resolution");
+        resolutionFour.setStartPercentage(0.75);
+        resolutionFour.setEndPercentage(1.0);
+        resolutionFour.setSequenceOrder(4);
+        resolutionFour.setTemplate(fourAct);
+
+
+        // Add beat segments to project
+        fourAct.getBeatSegments().add(setupFour);
+        fourAct.getBeatSegments().add(complicationFour);
+        fourAct.getBeatSegments().add(confrontationFour);
+        fourAct.getBeatSegments().add(resolutionFour);
+
+        beatTemplateRepository.save(fourAct);
+
 
         System.out.println("Beat template and segments created!");
 
