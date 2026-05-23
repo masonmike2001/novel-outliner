@@ -20,3 +20,9 @@ A Spring Boot web application designed to help authors plan and structure their 
 
 ---
 
+## Gallery
+
+![img.png](img.png)
+
+![img_1.png](img_1.png)
+
