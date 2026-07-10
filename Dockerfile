@@ -13,7 +13,8 @@ COPY frontend/novel-outliner-frontend/ .
 
 # Now, because we are inside the novel-outliner-frontend folder,
 # index.html will be at the root of the WORKDIR
-RUN npx vite build
+# Change line 16 to:
+RUN npx vite build --config vite.config.js --base ./
 # --- Stage 2: Build the Spring Boot Backend ---
 FROM maven:3.9-eclipse-temurin-17 AS backend-build
 WORKDIR /app
