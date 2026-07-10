@@ -2,6 +2,7 @@ services:
   # --- Spring Boot Backend ---
   - type: web
     name: my-backend
+    rootDir: ./backend   
     runtime: docker
     dockerfilePath: ./backend/Dockerfile  # Point to your Dockerfile
     envVars:
@@ -11,7 +12,7 @@ services:
   # --- TypeScript Frontend (React/Vite) ---
   - type: static
     name: my-frontend
-    rootDir: frontend        
+    rootDir: ./frontend        
     buildCommand: npm install && npm run build
     staticPublishPath: dist 
     buildFilter:
