@@ -6,7 +6,8 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      input: './novel-outliner-frontend/index.html' // Update this to your actual path
+      // Change this from './novel-outliner-frontend/index.html' to just './index.html'
+      input: './index.html' 
     }
   },
   server: {
