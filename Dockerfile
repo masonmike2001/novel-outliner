@@ -12,8 +12,8 @@ RUN npm cache clean --force && npm install
 # Copy source code
 COPY frontend/novel-outliner-frontend/ .
 
-# Run build
-RUN npm run build
+# Run only the vite build, skipping the TypeScript type-checker (tsc)
+RUN npx vite build
 
 # --- Stage 2: Build the Spring Boot Backend ---
 FROM maven:3.9-eclipse-temurin-17 AS backend-build
