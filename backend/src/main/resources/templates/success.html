@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark" >
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Success</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<!-- Responsive navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container px-5">
+        <a class="navbar-brand" th:href="@{/app}">Novel Outliner</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="#" th:href="@{/}">Story Structures</a>
+                </li>
+                <li class="nav-item"><a class="nav-link active" href="#" th:href="@{/app}">Outliner</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<header class="bg-dark py-5">
+    <div class="container px-5">
+        <div class="row gx-5 justify-content-center">
+            <div class="col-lg-6">
+                <div class="text-center my-5">
+                    <h1 class="display-5 fw-bolder text-white mb-2" th:text="${project.title}">Project Outline:</h1>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container mt-5 bg-dark">
+    <h3 class="text-white">Outline</h3>
+    <strong class="text-white">Target Word Count: <span th:text="${project.targetTotalWordCount}">0</span></strong>
+    <p class="text-white">You selected beat template: <strong th:text="${project.beatTemplate.title}"></strong></p>
+
+    <a href="/app">Go Back</a>
+    <hr/>
+
+
+    <hr class="bg-dark">
+        <!-- This is how you traverse the chapters list -->
+        <!-- Main Table Container -->
+        <table class="table table-dark table-hover">
+            <thead>
+            <tr>
+                <th>Chapter</th>
+                <th>Target Word Count</th>
+                <th>Story Segment</th>
+            </tr>
+            </thead>
+
+            <!-- 1. LOOP THROUGH TEMPLATE SEGMENTS (Sorted by Sequence Order) -->
+            <tbody th:each="segment : ${project.beatTemplate.beatSegments}">
+
+            <!-- Segment Section Header Row -->
+            <tr class="table-active border-bottom border-secondary">
+                <td colspan="3" class="py-2">
+                    <span class="text-info font-weight-bold h6 mb-0" th:text="${segment.title}">Segment Title</span>
+                    <span class="text-muted small ml-2"
+                          th:text="'(' + ${#numbers.formatInteger(segment.startPercentage * 100, 0)} + '%' +
+                               (${segment.startPercentage != segment.endPercentage} ? ' to ' + ${#numbers.formatInteger(segment.endPercentage * 100, 0)} + '%' : '') + ')'">
+                    (0% to 12%)
+                </span>
+                </td>
+            </tr>
+
+            <!-- Nested Loop: Render chapters belonging to THIS specific segment -->
+            <tr th:each="chapter : ${project.chapters}"
+                th:if="${chapter.beatSegment != null && chapter.beatSegment.id == segment.id}">
+                <td class="pl-4 text-white" th:text="'Chapter ' + ${chapter.sequenceOrder}">1</td>
+                <td class="text-white" th:text="${#numbers.formatInteger(chapter.wordCount, 0)}">3150</td>
+                <td class="text-muted small" th:text="${segment.title}">Segment Title</td>
+            </tr>
+            </tbody>
+
+<!--            &lt;!&ndash; 2. CATCH-ALL FOR UNASSIGNED CHAPTERS (If any fall outside ranges) &ndash;&gt;-->
+<!--            <tbody th:if="${#lists.anyWith(project.chapters, 'beatSegment == null')}">-->
+<!--            <tr class="table-warning text-dark">-->
+<!--                <td colspan="3" class="py-2 font-weight-bold">Unassigned Chapters</td>-->
+<!--            </tr>-->
+<!--            <tr th:each="chapter : ${project.chapters}" th:if="${chapter.beatSegment == null}">-->
+<!--                <td class="pl-4 text-white" th:text="'Chapter ' + ${chapter.sequenceOrder}">X</td>-->
+<!--                <td class="text-white" th:text="${chapter.wordCount}">500</td>-->
+<!--                <td class="text-warning small">Unassigned</td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+        </table>
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * *                               SB Forms JS                               * *-->
+<!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+</body>
+</html>
