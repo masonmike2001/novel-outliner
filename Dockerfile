@@ -1,6 +1,8 @@
 # --- Stage 1: Build the React Frontend ---
-FROM node:18-alpine AS frontend-build
+# Use a specific version to bypass caching issues
+FROM node:22.12.0-alpine AS frontend-build
 WORKDIR /app
+
 
 # Copy only the package files first to leverage Docker caching
 COPY frontend/novel-outliner-frontend/package*.json ./
