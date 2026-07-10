@@ -2,9 +2,9 @@ services:
   # --- Spring Boot Backend ---
   - type: web
     name: my-backend
-    rootDir: backend   
+    rootDir: backend        # Render looks inside here
     runtime: docker
-    dockerfilePath: ./backend/Dockerfile  # Point to your Dockerfile
+    dockerfilePath: Dockerfile  # Relative to the rootDir (backend/)
     envVars:
       - key: SERVER_PORT
         value: 8080
