@@ -1,26 +1,26 @@
-# --- Stage 1: Frontend ---
+# --- Stage 1: Build the React Frontend ---
 FROM node:18-alpine AS frontend-build
 WORKDIR /app
-COPY frontend/package*.json ./
-RUN npm install
-COPY frontend/ ./
-# Explicitly build
-RUN npm run build 
 
-# --- Stage 2: Backend ---
+# Copy only the package files first to leverage Docker caching
+COPY frontend/novel-outliner-frontend/package*.json ./
+RUN npm install
+
+# Copy the actual source code
+COPY frontend/novel-outliner-frontend/ .
+
+# Now npm run build will find index.html at the root of /app
+RUN npm run build
+
+# --- Stage 2: Build the Spring Boot Backend ---
 FROM maven:3.9-eclipse-temurin-17 AS backend-build
 WORKDIR /app
-# Copy only necessary files to speed up
+
 COPY backend/pom.xml .
 COPY backend/src ./src
-# Pull frontend build into the right place
-COPY --from=frontend-build /app/dist ./src/main/resources/static
-# Build JAR
-RUN mvn clean package -DskipTests
 
-# --- Stage 3: Runtime ---
-FROM eclipse-temurin:17-jre-jammy
-WORKDIR /app
-COPY --from=backend-build /app/target/*.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Pull the 'dist' folder from the previous stage
+# Since we built in /app/dist in Stage 1, we pull it from there
+COPY --from=frontend-build /app/dist ./src/main/resources/static
+
+RUN mvn clean package -DskipTests
