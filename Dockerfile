@@ -10,7 +10,7 @@ RUN npm install
 COPY frontend/novel-outliner-frontend/ .
 
 # Now npm run build will find index.html at the root of /app
-RUN npm run build
+RUN vite build
 
 # --- Stage 2: Build the Spring Boot Backend ---
 FROM maven:3.9-eclipse-temurin-17 AS backend-build
