@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Home() {
   return(<>
-<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav className="navbar navbar-expand-lg navbar-dark">
     <div className="container px-5">
         <Link className="navbar-brand" to="/outliner">Novel Outliner</Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
@@ -19,7 +19,7 @@ export default function Home() {
     </div>
 </nav>
 
-<header className="bg-dark py-5">
+<header className="py-5">
     <div className="container px-5">
         <div className="row gx-5 justify-content-center">
             <div className="col-lg-6">

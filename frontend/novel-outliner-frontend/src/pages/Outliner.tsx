@@ -68,7 +68,7 @@ navigate("/results", {
 
   return (<>
   
-<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav className="navbar navbar-expand-lg navbar-dark">
     <div className="container px-5">
         <Link className="navbar-brand text-white"  to="/outliner">Novel Outliner</Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
@@ -83,7 +83,7 @@ navigate("/results", {
         </div>
     </div>
 </nav>
-<section className="bg-dark py-5">
+<section className=" py-5">
     <div className="container px-5 my-5 px-5">
         <div className="text-center mb-5">
             <div className="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i className="bi bi-book"></i></div>
