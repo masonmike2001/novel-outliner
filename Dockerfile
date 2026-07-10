@@ -1,20 +1,19 @@
 # --- Stage 1: Build the React Frontend ---
-# --- Stage 1: Build the React Frontend ---
 FROM node:22.12.0-alpine AS frontend-build
-WORKDIR /app
 
-# Copy package files
+# Set the WORKDIR to the folder where your source code actually lives
+WORKDIR /app/novel-outliner-frontend
+
+# Copy package files from the subfolder
 COPY frontend/novel-outliner-frontend/package*.json ./
+RUN npm install
 
-# FORCE a clean install - this deletes any cached/incompatible binaries
-RUN npm cache clean --force && npm install
-
-# Copy source code
+# Copy the rest of the source code
 COPY frontend/novel-outliner-frontend/ .
 
-# Run only the vite build, skipping the TypeScript type-checker (tsc)
+# Now, because we are inside the novel-outliner-frontend folder,
+# index.html will be at the root of the WORKDIR
 RUN npx vite build
-
 # --- Stage 2: Build the Spring Boot Backend ---
 FROM maven:3.9-eclipse-temurin-17 AS backend-build
 WORKDIR /app
