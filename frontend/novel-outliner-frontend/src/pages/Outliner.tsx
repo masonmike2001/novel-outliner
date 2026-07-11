@@ -34,13 +34,6 @@ console.log(formData);
       },
       body: JSON.stringify(formData),
     });
-    //     const response = await fetch("/api/projects", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(formData),
-    // });
 
     if (!response.ok) {
       throw new Error("Failed to create project");
@@ -48,7 +41,7 @@ console.log(formData);
 
     const result = await response.json();
 
-const projectResponse = await fetch(`/api/projects/${result.id}`);
+const projectResponse = await fetch(`https://my-backend-t5vb.onrender.com/api/projects/${result.id}`);
 
 if (!projectResponse.ok) {
   throw new Error("Failed to load project");
@@ -62,12 +55,19 @@ navigate("/results", {
   }
 
     useEffect(() => {
-  async function loadBeatTemplates() {
-    const response = await fetch("/api/templates");
-    const data = await response.json();
+async function loadBeatTemplates() {
+  console.log("Loading from Render...");
+  const response = await fetch(
+    "https://my-backend-t5vb.onrender.com/api/templates"
+  );
 
-    setBeatTemplates(data);
-  }
+  console.log(response.url);
+
+  const data = await response.json();
+  console.log(data);
+
+  setBeatTemplates(data);
+}
 
   loadBeatTemplates();
 }, []);
