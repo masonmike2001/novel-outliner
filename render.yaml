@@ -13,9 +13,6 @@ services:
   - type: web
     name: my-frontend
     runtime: static
-    rootDir: frontend
+    publishPath: dist
     buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    buildFilter:
-      paths:
-        - "frontend/**"
+    rootDir: frontend/novel-outliner-frontend
