@@ -3,7 +3,37 @@ import React from "react";
 
 export default function Results() {
   const location = useLocation();
-  const project = location.state;
+
+
+
+  interface Chapter {
+  id: number;
+  sequenceOrder: number;
+  wordCount: number;
+  beatSegment: BeatSegment;
+}
+
+interface BeatSegment {
+  id: number;
+  title: string;
+  startPercentage: number;
+  endPercentage: number;
+}
+
+interface BeatTemplate {
+  id: number;
+  title: string;
+  beatSegments: BeatSegment[];
+}
+
+interface Project {
+  title: string;
+  targetTotalWordCount: number;
+  beatTemplate: BeatTemplate;
+  chapters: Chapter[];
+}
+
+const project = location.state as Project;
     console.log("PROJECT:", project);
     console.log("CHAPTERS:", project.chapters);
     console.log("SEGMENTS:", project.beatTemplate.beatSegments);
@@ -11,7 +41,6 @@ export default function Results() {
     return <div>No project data found</div>;
 
   }
-
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark">
@@ -94,7 +123,7 @@ export default function Results() {
 </div>
 
 <div className="progress mb-4" style={{ height: "28px" }}>
-  {project.beatTemplate.beatSegments.map((segment, index) => {
+  {project.beatTemplate.beatSegments.map((segment: BeatSegment, index : number) => {
     const colors = [
       "bg-primary",
       "bg-success",
@@ -120,7 +149,7 @@ export default function Results() {
 </div>
 
 <div className="d-flex flex-wrap gap-3 mt-3 justify-content-center">
-  {project.beatTemplate.beatSegments.map((segment, index) => (
+  {project.beatTemplate.beatSegments.map((segment:BeatSegment, index) => (
     <div key={segment.id} className="d-flex align-items-center">
       <span
         className={`badge bg-${[
