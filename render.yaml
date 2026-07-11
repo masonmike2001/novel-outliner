@@ -10,8 +10,9 @@ services:
         value: 8080
 
   # --- TypeScript Frontend (React/Vite) ---
-  - type: static
+  - type: web
     name: my-frontend
-    rootDir: frontend/novel-outliner-frontend
+    runtime: static
+    publishPath: dist
     buildCommand: npm install && npm run build
-    staticPublishPath: dist
+    rootDir: frontend/novel-outliner-frontend
