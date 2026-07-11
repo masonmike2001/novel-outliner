@@ -16,15 +16,14 @@ RUN npx vite build
 
 # --- Stage 2: Build the Spring Boot Backend ---
 FROM maven:3.9-eclipse-temurin-17 AS backend-build
-
-# Set the working directory to where the pom.xml lives
 WORKDIR /app
 
-# Copy the entire backend directory (this ensures the directory structure is preserved)
+# Copy the entire backend directory
 COPY backend/ ./backend/
 
-# Copy the frontend build output into the static resources folder
-COPY --from=frontend-build /app/novel-outliner-frontend/dist/ ./backend/src/main/resources/static/
+# DEBUG: List all files to verify pom.xml exists at /app/backend/pom.xml
+RUN ls -R /app/backend
 
-# Run Maven from the root but point it to the backend folder pom.xml
+# Run the command with a dummy 'echo' to see if it even reaches this point
+RUN echo "DEBUG: Starting Maven build..."
 RUN mvn -f backend/pom.xml clean package -DskipTests
