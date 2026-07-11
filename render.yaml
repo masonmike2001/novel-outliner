@@ -10,8 +10,9 @@ services:
         value: 8080
 
   # --- TypeScript Frontend (React/Vite) ---
-  - type: static
+  - type: web
     name: my-frontend
+    runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
