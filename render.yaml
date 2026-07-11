@@ -2,6 +2,7 @@ services:
   # --- Spring Boot Backend ---
   - type: web
     name: my-backend
+    plan: free
     runtime: docker
     dockerfilePath: ./backend/Dockerfile
     dockerContext: ./backend
@@ -12,7 +13,8 @@ services:
   # --- TypeScript Frontend (React/Vite) ---
   - type: web
     name: my-frontend
+    plan: free
     runtime: static
-    publishPath: dist
-    buildCommand: npm install && npm run build
     rootDir: frontend/novel-outliner-frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
