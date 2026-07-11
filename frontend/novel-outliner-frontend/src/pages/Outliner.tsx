@@ -27,13 +27,20 @@ const [formData, setFormData] = useState<{
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 console.log(formData);
-    const response = await fetch("/api/projects", {
+    const response = await fetch("https://my-backend-t5vb.onrender.com/api/projects", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
     });
+    //     const response = await fetch("/api/projects", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(formData),
+    // });
 
     if (!response.ok) {
       throw new Error("Failed to create project");
