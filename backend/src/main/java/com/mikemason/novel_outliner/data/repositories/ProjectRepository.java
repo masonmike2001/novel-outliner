@@ -17,13 +17,15 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     Optional<Project> findByIdAndSessionId(Long id, String sessionId);
     Optional<Project> findBySessionId(String sessionId);
 
+
+
     @Query("""
-    SELECT p FROM Project p
-    LEFT JOIN FETCH p.chapters c
-    LEFT JOIN FETCH p.beatTemplate bt
-    LEFT JOIN FETCH bt.beatSegments
-    WHERE p.id = :id
-""")
+        SELECT p FROM Project p
+        JOIN FETCH p.beatTemplate bt
+        JOIN FETCH bt.beatSegments
+        LEFT JOIN FETCH p.chapters c
+        WHERE p.id = :id
+    """)
     Optional<Project> findProjectWithDetails(@Param("id") Long id);
     void deleteByCreatedAtBefore(LocalDateTime cutoff);
 

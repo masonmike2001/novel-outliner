@@ -2,6 +2,7 @@ package com.mikemason.novel_outliner.data.web.api;
 
 import com.mikemason.novel_outliner.data.entities.Chapter;
 import com.mikemason.novel_outliner.data.entities.Project;
+import com.mikemason.novel_outliner.data.repositories.ProjectRepository;
 import com.mikemason.novel_outliner.data.services.ChapterService;
 import com.mikemason.novel_outliner.data.services.ProjectService;
 import jakarta.servlet.http.HttpSession;
@@ -10,14 +11,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/projects")
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final ProjectRepository projectRepository;
 
-    public ProjectController(ProjectService projectService) {
+    public ProjectController(ProjectService projectService, ProjectRepository projectRepository) {
         this.projectService = projectService;
+        this.projectRepository = projectRepository;
     }
 
     @GetMapping
@@ -30,12 +34,9 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Project> getProject(
-            @PathVariable Long id,
-            HttpSession session
-    ) {
-        Project project = projectService.getProject(id, session.getId());
-        return ResponseEntity.ok(project);
+    public Project getProject(@PathVariable Long id) {
+        return projectRepository.findProjectWithDetails(id)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
     }
 
     @PostMapping
