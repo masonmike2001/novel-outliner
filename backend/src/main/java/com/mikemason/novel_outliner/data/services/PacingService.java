@@ -71,6 +71,9 @@ public class PacingService {
                 chapter.setSequenceOrder(globalSequenceOrder++);
                 chapter.setSessionId(sessionId);
                 chapter.setProject(project);
+
+
+                System.out.println(segment.getId());
                 chapter.setBeatSegment(segment);
 
                 project.getChapters().add(chapter);
