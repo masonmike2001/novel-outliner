@@ -24,19 +24,22 @@ export default function Results() {
     beatSegments: BeatSegment[];
   }
 
-  interface Project {
-    title: string;
-    targetTotalWordCount: number;
-    beatTemplate?: BeatTemplate;
-    chapters: Chapter[];
-  }
+interface Project {
+  title: string;
+  targetTotalWordCount: number;
+  beatTemplate: BeatTemplate;
+  chapters: Chapter[];
+}
 
-  const project = location.state as Project | null;
+const project = location.state as Project | null;
 
-  if (!project) {
-    return <div className="text-white">No project data found</div>;
-  }
-
+if (!project || !project.beatTemplate) {
+  return (
+    <div className="text-white text-center py-5">
+      No project data or story structure found.
+    </div>
+  );
+}
   console.log("PROJECT:", project);
   console.log("CHAPTERS:", project.chapters);
   console.log("SEGMENTS:", project.beatTemplate);
