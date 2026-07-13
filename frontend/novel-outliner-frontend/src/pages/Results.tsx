@@ -4,43 +4,43 @@ import React from "react";
 export default function Results() {
   const location = useLocation();
 
-
-
   interface Chapter {
-  id: number;
-  sequenceOrder: number;
-  wordCount: number;
-  beatSegment: BeatSegment;
-}
-
-interface BeatSegment {
-  id: number;
-  title: string;
-  startPercentage: number;
-  endPercentage: number;
-}
-
-interface BeatTemplate {
-  id: number;
-  title: string;
-  beatSegments: BeatSegment[];
-}
-
-interface Project {
-  title: string;
-  targetTotalWordCount: number;
-  beatTemplate: BeatTemplate;
-  chapters: Chapter[];
-}
-
-const project = location.state as Project;
-    console.log("PROJECT:", project);
-    console.log("CHAPTERS:", project.chapters);
-    console.log("SEGMENTS:", project.beatTemplate.beatSegments);
-  if (!project) {
-    return <div>No project data found</div>;
-
+    id: number;
+    sequenceOrder: number;
+    wordCount: number;
+    beatSegment: BeatSegment;
   }
+
+  interface BeatSegment {
+    id: number;
+    title: string;
+    startPercentage: number;
+    endPercentage: number;
+  }
+
+  interface BeatTemplate {
+    id: number;
+    title: string;
+    beatSegments: BeatSegment[];
+  }
+
+  interface Project {
+    title: string;
+    targetTotalWordCount: number;
+    beatTemplate?: BeatTemplate;
+    chapters: Chapter[];
+  }
+
+  const project = location.state as Project | null;
+
+  if (!project) {
+    return <div className="text-white">No project data found</div>;
+  }
+
+  console.log("PROJECT:", project);
+  console.log("CHAPTERS:", project.chapters);
+  console.log("SEGMENTS:", project.beatTemplate);
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark">

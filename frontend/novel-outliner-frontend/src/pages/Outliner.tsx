@@ -25,7 +25,12 @@ const [formData, setFormData] = useState<{
   { id: number; title: string }[]
 >([]);
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        
     e.preventDefault();
+
+    
+
+    
 console.log(formData);
     const response = await fetch("https://my-backend-t5vb.onrender.com/api/projects", {
       method: "POST",
@@ -40,14 +45,17 @@ console.log(formData);
     }
 
     const result = await response.json();
+console.log("CREATE RESULT:", result);
 
-const projectResponse = await fetch(`https://my-backend-t5vb.onrender.com/api/projects/${result.id}`);
+const projectResponse = await fetch(
+  `https://my-backend-t5vb.onrender.com/api/projects/${result.id}`
+);
 
-if (!projectResponse.ok) {
-  throw new Error("Failed to load project");
-}
+console.log("GET PROJECT STATUS:", projectResponse.status);
 
 const project = await projectResponse.json();
+
+console.log("GET PROJECT:", project);
 
 navigate("/results", {
   state: project,
@@ -73,108 +81,307 @@ async function loadBeatTemplates() {
 }, []);
 
 
-  return (<>
-  
+  return (
+<>
 <nav className="navbar navbar-expand-lg navbar-dark">
-    <div className="container px-5">
-        <Link className="navbar-brand text-white"  to="/outliner">Novel Outliner</Link>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li className="nav-item">
-                    <Link className="nav-link" aria-current="page" to="/">Story Structures</Link>
-                </li>
-                <li className="nav-item"><Link className="nav-link active" to="/outliner">Outliner</Link></li>
+  <div className="container px-5">
 
-            </ul>
-        </div>
+    <Link className="navbar-brand text-white" to="/">
+      Novel Outliner
+    </Link>
+
+    <div className="collapse navbar-collapse">
+      <ul className="navbar-nav ms-auto">
+        <li className="nav-item">
+          <Link className="nav-link" to="/">
+            Home
+          </Link>
+        </li>
+
+        <li className="nav-item">
+          <Link className="nav-link active" to="/outliner">
+            Create Outline
+          </Link>
+        </li>
+      </ul>
     </div>
+
+  </div>
 </nav>
-<section className=" py-5">
-    <div className="container px-5 my-5 px-5">
-        <div className="text-center mb-5">
-            <div className="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i className="bi bi-book"></i></div>
-            <h2 className="fw-bolder text-white">Calculate optimal word count</h2>
-            <p className="lead mb-0 text-white">Choose a story structure, word targets, and we'll do the rest.</p>
-        </div>
-        <div className="row gx-5 justify-content-center">
-            <div className="col-lg-6">
-                <form id="appForm" onSubmit={handleSubmit}> 
-                    <div className="form-floating mb-3">
-                        <input
-                            className="form-control"
-                            id="title"
-                            type="text"
-                            value={formData.title}
-                            onChange={(e) =>
-                                setFormData({
-                                ...formData,
-                                title: e.target.value,
-                                })
-                            }
-                            />
-                        <label htmlFor="title">Project title</label>
-                        
-                    </div>
-                    <div className="form-floating mb-3">
-                        <input
-                        className="form-control"
-                        id="targetTotalWordCount"
-                        type="number"
-                        value={formData.targetTotalWordCount}
-                        onChange={(e) =>
-                            setFormData({
-                            ...formData,
-                            targetTotalWordCount: Number(e.target.value),
-                            })
-                        }
-                        />
-                        <label htmlFor="email">Target total word count</label>
-                        
-                    </div>
-                    <div className="form-floating mb-3">
-                        <input
-                        className="form-control"
-                        id="chapterLength"
-                        type="number"
-                        value={formData.chapterLength}
-                        onChange={(e) =>
-                            setFormData({
-                            ...formData,
-                            chapterLength: Number(e.target.value),
-                            })
-                        }
-                        />
-                        <label htmlFor="chapter">Target chapter word count</label>
-                       
-                    </div>
-                    <label>
-<select
-  className="form-select"
-  value={formData.beatTemplate.id ?? ""}
-  onChange={(e) =>
-    setFormData({
-      ...formData,
-      beatTemplate: {
-        id: Number(e.target.value)
-      }
-    })
-  }
->
-  <option value="">Choose a template</option>
 
-  {beatTemplates.map((template) => (
-    <option key={template.id} value={template.id}>
-      {template.title}
-    </option>
-  ))}
-</select>
-                    </label>
-                    <div className="d-grid"><button className="btn btn-primary btn-lg" id="calcButton" type="submit">Create</button></div>
-                </form>
-            </div>
-        </div>
-    </div>
+
+<section className="py-5">
+
+<div className="container px-5">
+
+
+<div className="text-center mb-5">
+
+<div className="feature bg-primary bg-gradient text-white rounded-3 mb-3 mx-auto">
+<i className="bi bi-book"></i>
+</div>
+
+<h1 className="display-5 fw-bold text-white">
+Create Your Novel Outline
+</h1>
+
+<p className="lead text-white-50">
+Choose your goals and story structure.
+Generate a complete chapter roadmap.
+</p>
+
+</div>
+
+
+
+<div className="row justify-content-center">
+
+<div className="col-lg-8">
+
+
+<div className="card bg-dark border-secondary shadow-lg">
+
+<div className="card-body p-5">
+
+
+<form id="appForm" onSubmit={handleSubmit}>
+
+
+<h4 className="text-white mb-4">
+Project Details
+</h4>
+
+
+
+<div className="form-floating mb-4">
+
+<input
+className="form-control"
+id="title"
+type="text"
+placeholder="Project title"
+value={formData.title}
+onChange={(e)=>
+setFormData({
+...formData,
+title:e.target.value
+})
+}
+/>
+
+<label htmlFor="title">
+Project Title
+</label>
+
+</div>
+
+
+
+
+<div className="row">
+
+
+<div className="col-md-6">
+
+<div className="form-floating mb-4">
+
+<input
+className="form-control"
+type="number"
+value={formData.targetTotalWordCount}
+onChange={(e)=>
+setFormData({
+...formData,
+targetTotalWordCount:Number(e.target.value)
+})
+}
+/>
+
+<label>
+Target Word Count
+</label>
+
+</div>
+
+</div>
+
+
+
+<div className="col-md-6">
+
+<div className="form-floating mb-4">
+
+<input
+className="form-control"
+type="number"
+value={formData.chapterLength}
+onChange={(e)=>
+setFormData({
+...formData,
+chapterLength:Number(e.target.value)
+})
+}
+/>
+
+<label>
+Chapter Length
+</label>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<h4 className="text-white mt-3 mb-3">
+Story Structure
+</h4>
+
+
+<div className="row g-3">
+
+{beatTemplates.map((template)=>(
+
+<div
+className="col-md-4"
+key={template.id}
+>
+
+
+<div
+className={`card h-100 ${
+formData.beatTemplate.id === template.id
+? "border-primary bg-primary bg-opacity-25"
+: "border-secondary bg-dark"
+}`}
+
+style={{
+cursor:"pointer"
+}}
+
+onClick={()=>
+setFormData({
+...formData,
+beatTemplate:{
+id:template.id
+}
+})
+}
+
+>
+
+
+<div className="card-body text-center">
+
+<i className="bi bi-diagram-3 fs-2 text-primary"></i>
+
+<h5 className="text-white mt-3">
+{template.title}
+</h5>
+
+
+<p className="small text-white-50">
+Narrative framework
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+))}
+
+
+</div>
+
+
+
+
+<div className="mt-4 p-4 bg-black rounded">
+
+
+<h5 className="text-white">
+Outline Preview
+</h5>
+
+
+<p className="text-white-50 mb-1">
+Words:
+<span className="text-white">
+{" "}
+{formData.targetTotalWordCount.toLocaleString()}
+</span>
+</p>
+
+
+<p className="text-white-50 mb-1">
+Chapter size:
+<span className="text-white">
+{" "}
+{formData.chapterLength.toLocaleString()}
+</span>
+</p>
+
+
+
+<p className="text-white-50">
+Structure:
+<span className="text-white">
+
+{" "}
+{
+beatTemplates.find(
+(t)=>t.id===formData.beatTemplate.id
+)?.title || "Select a structure"
+}
+
+</span>
+</p>
+
+
+</div>
+
+
+
+
+<button
+className="btn btn-primary btn-lg w-100 mt-4"
+type="submit"
+>
+
+<i className="bi bi-magic me-2"></i>
+
+Generate Outline
+
+</button>
+
+
+
+</form>
+
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+</div>
+
 </section>
-  </>);
+
+</>
+);
 }
