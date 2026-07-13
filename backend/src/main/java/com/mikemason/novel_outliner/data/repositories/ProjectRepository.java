@@ -20,12 +20,10 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
 
     @Query("""
-        SELECT p FROM Project p
-        JOIN FETCH p.beatTemplate bt
-        JOIN FETCH bt.beatSegments
-        LEFT JOIN FETCH p.chapters c
-        WHERE p.id = :id
-    """)
+    SELECT p FROM Project p
+    JOIN FETCH p.beatTemplate bt
+    WHERE p.id = :id
+""")
     Optional<Project> findProjectWithDetails(@Param("id") Long id);
     void deleteByCreatedAtBefore(LocalDateTime cutoff);
 

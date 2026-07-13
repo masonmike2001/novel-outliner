@@ -35,8 +35,14 @@ public class ProjectController {
 
     @GetMapping("/{id}")
     public Project getProject(@PathVariable Long id) {
-        return projectRepository.findProjectWithDetails(id)
+
+        Project project = projectRepository.findProjectWithDetails(id)
                 .orElseThrow(() -> new RuntimeException("Project not found"));
+
+        project.getBeatTemplate().getBeatSegments().size();
+        project.getChapters().size();
+
+        return project;
     }
 
     @PostMapping
