@@ -25,9 +25,8 @@ public class Project {
 
 
 
-    @JsonIgnoreProperties
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "beat_template_id", nullable = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "beat_template_id")
     private BeatTemplate beatTemplate;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
