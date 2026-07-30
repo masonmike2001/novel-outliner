@@ -5,7 +5,7 @@ A Spring Boot web application designed to help authors plan and structure their 
 ## Features
 
 *   **Structure-Driven Outlining:** Automatically calculates target word counts for chapters based on classic storytelling frameworks.
-*   **Dynamic Web Forms:** Powered by Thymeleaf to fetch available structures and instantly generate linked Chapter entities.
+*   **Dynamic Web Forms:** Powered by Vite + React to fetch available structures and instantly generate linked Chapter entities in a cohesive project.
 *   **Dual-Database Isolation:** Separates static story-structure templates from temporary user session data to maximize security and minimize storage bloat.
 *   **Containerized Architecture:** Fully containerized development environment using Podman.
 
@@ -14,7 +14,7 @@ A Spring Boot web application designed to help authors plan and structure their 
 ## Tech Stack
 
 *   **Backend:** Java, Spring Boot (Spring MVC, Spring Data JPA)
-*   **Frontend:** Thymeleaf, HTML5, CSS3
+*   **Frontend:** Vite + React, HTML5, CSS3
 *   **Database:** PostgreSQL
 *   **Containerization:** Podman
 
