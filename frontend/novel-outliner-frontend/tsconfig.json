@@ -3,9 +3,10 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ],  
+  ],
   "compilerOptions": {
     "noImplicitAny": false,
-    "strict": false
-}
+    "strict": false,
+    "types": ["vitest/globals"]
+  }
 }

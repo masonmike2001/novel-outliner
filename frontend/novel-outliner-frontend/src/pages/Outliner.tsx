@@ -27,38 +27,31 @@ export default function Outliner() {
     setLoading(true);
 
     e.preventDefault();
-
-    const response = await fetch(
-      "https://my-backend-t5vb.onrender.com/api/projects",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    try {
+      const postResponse = await fetch(
+        "https://my-backend-t5vb.onrender.com/api/projects",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
         },
-        body: JSON.stringify(formData),
-      },
-    );
+      );
+      const result = await postResponse.json();
+      const getResponse = await fetch(
+        `https://my-backend-t5vb.onrender.com/api/projects/${result.id}`,
+      );
 
-    if (!response.ok) {
-      throw new Error("Failed to create project");
+      const project = await getResponse.json();
+      navigate("/results", {
+        state: project,
+      });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
-
-    const result = await response.json();
-    console.log("CREATE RESULT:", result);
-
-    const projectResponse = await fetch(
-      `https://my-backend-t5vb.onrender.com/api/projects/${result.id}`,
-    );
-
-    console.log("GET PROJECT STATUS:", projectResponse.status);
-
-    const project = await projectResponse.json();
-
-    console.log("GET PROJECT:", project);
-
-    navigate("/results", {
-      state: project,
-    });
   }
 
   useEffect(() => {
@@ -77,7 +70,6 @@ export default function Outliner() {
     }
 
     loadBeatTemplates();
-    setLoading(false);
   }, []);
 
   return (
