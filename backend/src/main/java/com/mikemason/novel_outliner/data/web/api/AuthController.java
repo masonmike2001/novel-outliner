@@ -1,5 +1,6 @@
-package com.mikemason.novel_outliner.data.web.controller;
+package com.mikemason.novel_outliner.data.web.api;
 
+import com.mikemason.novel_outliner.data.dto.LoginRequest;
 import com.mikemason.novel_outliner.data.dto.RegistrationRequest;
 import com.mikemason.novel_outliner.data.services.UserService;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,13 @@ public class AuthController {
     public AuthController(UserService userService) {
         this.userService = userService;
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+
+        return ResponseEntity.ok(userService.login(request));
+    }
+
 
     @PostMapping("/register")
     public ResponseEntity<?> register(
