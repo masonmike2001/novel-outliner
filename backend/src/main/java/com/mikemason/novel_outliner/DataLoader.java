@@ -2,19 +2,15 @@ package com.mikemason.novel_outliner;
 
 import com.mikemason.novel_outliner.data.entities.BeatSegment;
 import com.mikemason.novel_outliner.data.entities.BeatTemplate;
-import com.mikemason.novel_outliner.data.entities.Chapter;
-import com.mikemason.novel_outliner.data.entities.Project;
+import com.mikemason.novel_outliner.data.entities.User;
 import com.mikemason.novel_outliner.data.repositories.BeatSegmentRepository;
 import com.mikemason.novel_outliner.data.repositories.BeatTemplateRepository;
-import com.mikemason.novel_outliner.data.repositories.ChapterRepository;
-import com.mikemason.novel_outliner.data.repositories.ProjectRepository;
-import com.mikemason.novel_outliner.data.services.PacingService;
+import com.mikemason.novel_outliner.data.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 
 @Component
@@ -22,14 +18,18 @@ public class DataLoader implements CommandLineRunner {
 
     private final BeatTemplateRepository beatTemplateRepository;
     private final BeatSegmentRepository beatSegmentRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public DataLoader(
             BeatTemplateRepository beatTemplateRepository,
-            BeatSegmentRepository beatSegmentRepository
+            BeatSegmentRepository beatSegmentRepository, UserRepository userRepository, PasswordEncoder passwordEncoder
     ) {
         this.beatTemplateRepository = beatTemplateRepository;
         this.beatSegmentRepository = beatSegmentRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -38,7 +38,7 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) {
 
         System.out.println("DataLoader started");
-
+//        createAdmin();
 
         if (beatTemplateRepository.count() > 0) {
             System.out.println("Templates already exist. Skipping seed.");
@@ -53,7 +53,6 @@ public class DataLoader implements CommandLineRunner {
 
         System.out.println("Templates seeded");
     }
-
 
 
     private void createHeroJourney() {
@@ -167,8 +166,6 @@ public class DataLoader implements CommandLineRunner {
     }
 
 
-
-
     private void createThreeAct() {
 
         BeatTemplate template = new BeatTemplate();
@@ -204,9 +201,6 @@ public class DataLoader implements CommandLineRunner {
                 template
         );
     }
-
-
-
 
 
     private void createFourAct() {
@@ -254,9 +248,6 @@ public class DataLoader implements CommandLineRunner {
     }
 
 
-
-
-
     private void saveSegment(
             String title,
             double start,
@@ -275,5 +266,15 @@ public class DataLoader implements CommandLineRunner {
 
 
         beatSegmentRepository.save(segment);
+    }
+
+    private void createAdmin() {
+
+        User user = new User();
+        user.setUsername("admin");
+        user.setPassword(passwordEncoder.encode("password"));
+        user.setEmail("me@mikemason.dev");
+
+        userRepository.save(user);
     }
 }

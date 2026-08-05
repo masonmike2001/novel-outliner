@@ -1,9 +1,6 @@
 package com.mikemason.novel_outliner.data.web.api;
-
-import com.mikemason.novel_outliner.data.entities.Chapter;
 import com.mikemason.novel_outliner.data.entities.Project;
 import com.mikemason.novel_outliner.data.repositories.ProjectRepository;
-import com.mikemason.novel_outliner.data.services.ChapterService;
 import com.mikemason.novel_outliner.data.services.ProjectService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
